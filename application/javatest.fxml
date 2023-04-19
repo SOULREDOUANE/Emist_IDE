@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="764.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.IdeController">
+   <children>
+      <MenuBar layoutX="-15.0" layoutY="2.0" AnchorPane.bottomAnchor="609.6666666666666" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#openFolder" text="Open Folder" />
+                  <MenuItem mnemonicParsing="false" onAction="#openFile" text="Open File" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="New File" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save ">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem mnemonicParsing="false" text="Save As" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <SplitPane dividerPositions="0.23686514886164628" layoutX="62.0" layoutY="60.0" prefHeight="635.0" prefWidth="764.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <TreeView id="treeView" fx:id="treeView" layoutY="33.0" prefHeight="572.0" prefWidth="177.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="33.0" />
+                  <Separator layoutX="112.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="33.0" prefWidth="0.0" AnchorPane.topAnchor="-2.0" />
+                  <Separator layoutX="54.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="33.0" prefWidth="0.0" AnchorPane.topAnchor="0.0" />
+                  <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="118.0" onDragDetected="#addFile" onMouseClicked="#openFile" onTouchPressed="#addFile" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="575.0">
+                     <image>
+                        <Image url="@../images/add-file(1).png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="33.0" fitWidth="40.0" layoutX="72.0" layoutY="-2.0" onMouseClicked="#addFolder" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="-2.0">
+                     <image>
+                        <Image url="@../images/add-folder.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <SplitPane orientation="VERTICAL" prefHeight="632.6666666666666" prefWidth="530.6666666666666" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                            <AnchorPane layoutX="132.0" layoutY="-173.0" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                              <SplitPane dividerPositions="0.7281284606866003" orientation="VERTICAL" prefHeight="604.6666666666666" prefWidth="575.3333333333334" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <Hyperlink fx:id="hyperlink" focusTraversable="false" layoutX="127.0" layoutY="125.0" onAction="#openRootFolder" prefHeight="24.0" prefWidth="237.0" text="Open a Folder">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Hyperlink>
+                                          <TextArea id="mainTextArea" fx:id="textArea" layoutX="-1.0" layoutY="20.0" prefHeight="466.0" prefWidth="575.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="20.0" />
+                                          <AnchorPane fx:id="anchorbar" layoutX="73.0" layoutY="99.0" prefHeight="18.0" prefWidth="545.0" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="-45.0" AnchorPane.topAnchor="99.0">
+                                             <children>
+                                                <Label fx:id="label" layoutX="57.0" text="Start :" textFill="#2c0ca3">
+                                                   <font>
+                                                      <Font size="21.0" />
+                                                   </font>
+                                                </Label>
+                                             </children></AnchorPane>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <TextArea layoutX="29.0" layoutY="-28.0" prefHeight="131.33333333333334" prefWidth="572.6666666666666" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
