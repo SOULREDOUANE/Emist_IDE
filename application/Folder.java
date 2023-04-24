@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Folder {
@@ -8,6 +9,7 @@ public class Folder {
     private String fatherPath;
     private String relativePath;
     private String name;
+    private ArrayList<File> files= new ArrayList<>(null);
 
     public Folder(String absolutePath, String name) {
         setAbsolutePath(absolutePath);

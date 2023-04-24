@@ -5,13 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
-import javafx.scene.image.ImageView;
+
+import org.w3c.dom.Text;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -35,12 +39,30 @@ public class IdeController implements Initializable {
 	private File selectedFile;
 
 	@FXML
+	private TextArea textArea1;
+	@FXML
+	private TextArea textArea2;
+	@FXML
+	private TextArea textArea3;
+	@FXML
+	private TextArea textArea4;
+	@FXML
+	private TextArea textArea5;
+
 	private TextArea textArea;
 
+	private ArrayList<TextArea> textAreas = new ArrayList<>();
+
+	// TextArea[] textAreas = new TextArea[5];
 	@FXML
 	private Hyperlink hyperlink;
 	@FXML
 	private Label label;
+
+	@FXML
+	private TreeView<String> treeView;
+
+	private int numberOfUsedTextArea = 0;
 
 	private String filePath;
 
@@ -48,45 +70,52 @@ public class IdeController implements Initializable {
 
 	private String rootFolderPath;
 
-	@FXML
-	private TreeView<String> treeView;
 	private RootFolder rootFolder;
 
 	private TreeItem<String> rootFolderTree = new TreeItem<>("rootFolderTree");
 
 	@FXML
 	void addFile(MouseEvent event) {
-		String folderName = getNameFormPopUp("file");
-		String path = rootFolderPath + "/" + folderName;
-	
-		try {
-			File file = new File(path);
-			boolean created = file.createNewFile();
+		String fileName = getNameFormPopUp("file");
 
-			TreeItem<String> floder1 = new TreeItem<>(folderName);
-			rootFolderTree.getChildren().add(floder1);
-	
+		try {
+
+			// getting the path of the current folder;
+			String currentFolderName = getSelectedTreeItemName();
+			String path = rootFolderPath + "\\" + currentFolderName + "\\" + fileName;
+			System.out.println(path);
+			File file = new File(path);
+			file.createNewFile();
+
+			// display the file in the text area
+
+			TreeItem<String> file1 = new TreeItem<>(folderName);
+			// add the file to its parent folder
+			findTreeItem(rootFolderTree, currentFolderName).getChildren().add(file1);
+			
+
+			// link the file to its textArea
+			textAreas.get(numberOfUsedTextArea).setId(path);
+			// decrement the number of used textAreas;
+			numberOfUsedTextArea++;
+
 		} catch (IOException e) {
-			System.out.println(e +"file is not created properly");
+			System.out.println(e + "file is not created properly");
 		}
 
-
 	}
-
-	@FXML
-	// void addFolder(MouseEvent event) {
-	// System.out.println("what do you think about this folder");
-	// }
 
 	public void openFile(MouseEvent event) {
 
 		if (rootFolderIsOpen) {
 
-			stage = (Stage) ((ImageView) event.getSource()).getScene().getWindow();
-			selectedFile = fileChooser.showOpenDialog(stage);
-			filePath = selectedFile.getAbsolutePath();
-			// textArea.setVisible(true);
-			textArea.setText("");
+			String fileName = getNameFormPopUp("file");
+			String path = rootFolderPath + "//" + folderName;
+
+			File newFile = new File(path);
+			newFile.mkdirs();
+			TreeItem<String> item1 = new TreeItem<>(fileName);
+			rootFolderTree.getChildren().add(item1);
 
 			TreeItem<String> item3 = new TreeItem<>(selectedFile.getName());
 			rootFolderTree.getChildren().add(item3);
@@ -96,6 +125,8 @@ public class IdeController implements Initializable {
 				selectedFile = new File(filePath);
 				Scanner myReader = new Scanner(selectedFile);
 
+				textArea = textAreas.get(numberOfUsedTextArea);
+				textArea.setText("");
 				while (myReader.hasNextLine()) {
 
 					textArea.appendText(myReader.nextLine());
@@ -103,7 +134,9 @@ public class IdeController implements Initializable {
 				}
 
 				myReader.close();
-				textArea.setVisible(true);
+				// textArea.setVisible(true);
+				setVisibleListOfTextAreas(textArea);
+				textArea.setId(filePath);
 
 			} catch (FileNotFoundException e) {
 
@@ -118,29 +151,28 @@ public class IdeController implements Initializable {
 
 	public void openFile(ActionEvent event) {
 		if (rootFolderIsOpen) {
-			
+
 			stage = (Stage) ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
 			selectedFile = fileChooser.showOpenDialog(stage);
 			filePath = selectedFile.getAbsolutePath();
 
-			
 			TreeItem<String> item3 = new TreeItem<>(selectedFile.getName());
 			rootFolderTree.getChildren().add(item3);
-			
+
 			try {
-				
+
 				selectedFile = new File(filePath);
 				Scanner myReader = new Scanner(selectedFile);
-				
-				textArea.setText("");
+
+				textArea1.setText("");
 				while (myReader.hasNextLine()) {
 
-					textArea.appendText(myReader.nextLine());
-					textArea.appendText("\n");
+					textArea1.appendText(myReader.nextLine());
+					textArea1.appendText("\n");
 				}
 
 				myReader.close();
-				textArea.setVisible(true);
+				textArea1.setVisible(true);
 
 			} catch (FileNotFoundException e) {
 
@@ -157,7 +189,7 @@ public class IdeController implements Initializable {
 
 		try {
 			FileWriter writer = new FileWriter(selectedFile);
-			writer.write(textArea.getText());
+			writer.write(textArea1.getText());
 			writer.close();
 		} catch (IOException ex) {
 			System.out.println("Error saving text to file: " + ex.getMessage());
@@ -184,23 +216,22 @@ public class IdeController implements Initializable {
 
 	}
 
-
 	public void openFolder(ActionEvent event) {
 
 		if (rootFolderIsOpen) {
 			DirectoryChooser chooser = new DirectoryChooser();
 			chooser.setTitle("JavaFX Projects");
 
-			File rootFolderFile = chooser.showDialog(stage);
-			folderName = rootFolderFile.getName();
-			rootFolderPath = rootFolderFile.getAbsolutePath();
-		} 
+			File folder = chooser.showDialog(stage);
+			Folder folder1 = new Folder(folder.getAbsolutePath(), folder.getName());
+			rootFolder.addChildFolder(folder1);
+		}
 
 	}
 
-	public String getNameFormPopUp(String folderOrFile) {
+	private String getNameFormPopUp(String folderOrFile) {
 		TextInputDialog dialog = new TextInputDialog("Enter your name");
-		dialog.setTitle(folderOrFile+"'s Name Input Dialog");
+		dialog.setTitle(folderOrFile + "'s Name Input Dialog");
 		dialog.setHeaderText("Please enter your " + folderOrFile + " name:");
 
 		// Show the dialog and wait for the user to enter text
@@ -222,12 +253,44 @@ public class IdeController implements Initializable {
 		String path = rootFolderPath + "/" + folderName;
 		System.out.println(rootFolderPath);
 
-		File folder = new File(path);
-		boolean success = folder.mkdirs();
-		TreeItem<String> floder1 = new TreeItem<>(folderName);
-		rootFolderTree.getChildren().add(floder1);
-		rootFolder.addChildFolder(path);
+		File newFolder = new File(path);
+		newFolder.mkdirs();
+		TreeItem<String> item1 = new TreeItem<>(folderName);
+		rootFolderTree.getChildren().add(item1);
 
+		Folder folder = new Folder(newFolder.getAbsolutePath(), newFolder.getName());
+		rootFolder.addChildFolder(folder);
+		// rootFolder.addChildFolder(path);
+
+	}
+
+	private void setVisibleListOfTextAreas(TextArea textArea) {
+		for (TextArea textArea1 : textAreas) {
+
+			if (textArea1.getId() != textArea.getId()) {
+				textArea1.setVisible(false);
+			}
+
+		}
+		textArea.setVisible(true);
+	}
+
+	private String getSelectedTreeItemName() {
+
+		TreeItem<String> fileItem = treeView.getSelectionModel().getSelectedItem();
+
+		if (fileItem != null) {
+			return fileItem.getValue();
+			// for (TreeItem folder : rootFolderTree.getChildren()) {
+
+			// if (folder.getValue().equals(fileItem.getParent().getValue())) {
+			// System.out.println(folder.getValue());
+			// return (String) folder.getValue();
+			// }
+			// }
+
+		}
+		return "";
 	}
 
 	public void addFolder(MouseEvent event) {
@@ -236,20 +299,52 @@ public class IdeController implements Initializable {
 
 			String folderName = getNameFormPopUp("file");
 			String path = rootFolderPath + "/" + folderName;
-			System.out.println(rootFolderPath);
-	
-			File folder = new File(path);
-			boolean success = folder.mkdirs();
-			TreeItem<String> floder1 = new TreeItem<>(folderName);
-			rootFolderTree.getChildren().add(floder1);
-			
+			// System.out.println(rootFolderPath);
+
+			File newFolder = new File(path);
+			newFolder.mkdirs();
+			TreeItem<String> item1 = new TreeItem<>(folderName);
+			rootFolderTree.getChildren().add(item1);
+
 		}
 
 	}
-
+	
+	private TreeItem<String> findTreeItem(TreeItem<String> root, String value) {
+		if (root.getValue().equals(value)) {
+			return root;
+		}
+		for (TreeItem<String> child : root.getChildren()) {
+			TreeItem<String> result = findTreeItem(child, value);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+
+		// stage = (Stage) label.getScene().getWindow();
+
+		// add textarea items to textareas Arraylist
+		textAreas.add(textArea1);
+		textAreas.add(textArea2);
+		textAreas.add(textArea3);
+		textAreas.add(textArea4);
+		textAreas.add(textArea5);
+		// textArea2.setVisible(true);
+
+		for (TextArea textArea : textAreas) {
+
+			System.out.println(textArea.getId());
+		}
+		for (int index = 0; index < 5; index++) {
+			System.out.println();
+		}
+
 		TreeItem<String> rootFolderTree = new TreeItem<>("Files");
 
 		TreeItem<String> item1 = new TreeItem<>("Item1");
@@ -257,7 +352,7 @@ public class IdeController implements Initializable {
 
 		rootFolderTree.getChildren().addAll(item1, item2);
 		treeView.setRoot(rootFolderTree);
-		textArea.setVisible(false);
+		textArea1.setVisible(false);
 
 	}
 

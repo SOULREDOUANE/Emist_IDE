@@ -55,7 +55,7 @@
                   <TreeView id="treeView" fx:id="treeView" layoutY="33.0" prefHeight="572.0" prefWidth="177.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="33.0" />
                   <Separator layoutX="112.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="33.0" prefWidth="0.0" AnchorPane.topAnchor="-2.0" />
                   <Separator layoutX="54.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="33.0" prefWidth="0.0" AnchorPane.topAnchor="0.0" />
-                  <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="118.0" onDragDetected="#addFile" onMouseClicked="#openFile" onTouchPressed="#addFile" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="575.0">
+                  <ImageView fitHeight="33.0" fitWidth="33.0" layoutX="118.0" onDragDetected="#addFile" onMouseClicked="#addFile" onTouchPressed="#addFile" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="575.0" AnchorPane.topAnchor="0.0">
                      <image>
                         <Image url="@../images/add-file(1).png" />
                      </image>
@@ -76,14 +76,18 @@
                             <AnchorPane layoutX="132.0" layoutY="-173.0" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
                               <SplitPane dividerPositions="0.7281284606866003" orientation="VERTICAL" prefHeight="604.6666666666666" prefWidth="575.3333333333334" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <items>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" onMouseClicked="#addFile" prefHeight="100.0" prefWidth="160.0">
                                        <children>
+                                          <TextArea id="mainTextArea" fx:id="textArea1" layoutX="-1.0" layoutY="20.0" prefHeight="466.0" prefWidth="575.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
+                                          <TextArea id="mainTextArea1" fx:id="textArea2" layoutY="20.0" prefHeight="415.0" prefWidth="584.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
+                                          <TextArea id="mainTextArea3" fx:id="textArea3" layoutX="-2.0" layoutY="22.0" prefHeight="415.0" prefWidth="596.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
+                                          <TextArea id="mainTextArea4" fx:id="textArea4" layoutX="-3.0" layoutY="22.0" prefHeight="415.0" prefWidth="607.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                          <TextArea id="mainTextArea5" fx:id="textArea5" layoutX="-3.0" layoutY="23.0" prefHeight="415.0" prefWidth="617.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
                                           <Hyperlink fx:id="hyperlink" focusTraversable="false" layoutX="127.0" layoutY="125.0" onAction="#openRootFolder" prefHeight="24.0" prefWidth="237.0" text="Open a Folder">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Hyperlink>
-                                          <TextArea id="mainTextArea" fx:id="textArea" layoutX="-1.0" layoutY="20.0" prefHeight="466.0" prefWidth="575.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="20.0" />
                                           <AnchorPane fx:id="anchorbar" layoutX="73.0" layoutY="99.0" prefHeight="18.0" prefWidth="545.0" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="-45.0" AnchorPane.topAnchor="99.0">
                                              <children>
                                                 <Label fx:id="label" layoutX="57.0" text="Start :" textFill="#2c0ca3">
