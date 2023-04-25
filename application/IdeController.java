@@ -13,7 +13,7 @@ import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -23,6 +23,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -74,6 +75,8 @@ public class IdeController implements Initializable {
 	private String rootFolderName;
 
 	private RootFolder rootFolder;
+	
+	private VBox vBox;
 
 	private TreeItem<String> rootFolderTree = new TreeItem<>("rootFolderTree");
 
@@ -342,26 +345,33 @@ public class IdeController implements Initializable {
 	}
 
 	public void DisplayTextAreaOfSelectedFile() {
+	
 		TreeItem selectedTreeItem = getSelectedTreeItem();
-		System.out.println(selectedTreeItem.getValue());
-
-		// getting the path of the file that is associated with treeview
-		String path = (String) selectedTreeItem.getValue();
-		selectedTreeItem = selectedTreeItem.getParent();
-		while (selectedTreeItem != null && !selectedTreeItem.getValue().equals(rootFolderTree.getValue())) {
-			path = selectedTreeItem.getValue() + "\\" + path;
+		if (selectedTreeItem!=null) {
+			// getting the path of the file that is associated with treeview
+			String path = (String) selectedTreeItem.getValue();
 			selectedTreeItem = selectedTreeItem.getParent();
-		}
-		path = rootFolderPath+ "\\" + path ;
-
-		// System.out.println(path);
-		for (TextArea textArea : textAreas) {
-			if (textArea.getId().equals(path)) {
-				setVisibleListOfTextAreas(textArea);
+			while (selectedTreeItem != null && !selectedTreeItem.getValue().equals(rootFolderTree.getValue())) {
+				path = selectedTreeItem.getValue() + "\\" + path;
+				selectedTreeItem = selectedTreeItem.getParent();
+			}
+			path = rootFolderPath+ "\\" + path ;
+	
+			// System.out.println(path);
+			for (TextArea textArea : textAreas) {
+				if (textArea.getId().equals(path)) {
+					setVisibleListOfTextAreas(textArea);
+				}
 			}
 		}
 	}
 
+	public void showErrors() {
+		Label newlabel=new Label("hi there what do you think about some stuff");
+		vBox.getChildren().add(newlabel);
+		
+		
+	}
 	private void setVisibleListOfTextAreas(TextArea textArea) {
 		for (TextArea textArea1 : textAreas) {
 
@@ -446,13 +456,19 @@ public class IdeController implements Initializable {
 		textAreas.add(textArea5);
 		// textArea2.setVisible(true);
 
-		for (TextArea textArea : textAreas) {
+		// Create a VBox to hold the label
+		vBox = new VBox();
 
-			System.out.println(textArea.getId());
-		}
-		for (int index = 0; index < 5; index++) {
-			System.out.println();
-		}
+		//  set the VBox as a content of ScrollPane
+		scrollPane.setContent(vBox);
+
+		// _____________
+		// Create a child TreeItem with a node as its value
+        // VBox vbox = new VBox();
+        // Button but=new Button("red");
+        // vbox.getChildren().add(but);
+        // TreeItem<String> childItem = new TreeItem<>("Child", vbox);
+		// ______________
 
 		TreeItem<String> rootFolderTree = new TreeItem<>("Files");
 
